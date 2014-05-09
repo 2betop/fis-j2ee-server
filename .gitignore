@@ -1,2 +1,6 @@
 # idea folder
 /.idea/
+
+.DS_Store
+/tomcat.*
+/target
