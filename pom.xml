@@ -1,0 +1,16 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.baidu.fis</groupId>
+    <artifactId>j2ee-server</artifactId>
+    <version>1.0rc</version>
+    <packaging>jar</packaging>
+
+    <name>F.I.S J2EE Server.</name>
+    <url>https://github.com/2betop/fis-j2ee-server</url>
+
+    <dependencies>
+
+    </dependencies>
+</project>
