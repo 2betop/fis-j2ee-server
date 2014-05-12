@@ -1,0 +1,6 @@
+# idea folder
+/.idea/
+
+.DS_Store
+/work
+/target
