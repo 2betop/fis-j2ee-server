@@ -1,5 +1,6 @@
 package com.baidu.fis.server.launch;
 
+import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
@@ -13,7 +14,9 @@ import java.io.File;
  */
 public class Main {
 
+
     public static int PORT = 8080;
+    public static String BASE_DIR = null;
     public static String WEBAPP_DIR = "./web";
 
     public static void main(String[] args) throws Exception {
@@ -21,6 +24,7 @@ public class Main {
 
         options.addOption("h", "help", false, "output usage information" );
         options.addOption("p", "port", true, "server listen port");
+        options.addOption("base", true, "tomcat base dir" );
         options.addOption("root", true, "document root" );
 
         HelpFormatter help = new HelpFormatter();
@@ -36,6 +40,12 @@ public class Main {
             PORT = Integer.valueOf(cmd.getOptionValue("port"));
         }
 
+        if (cmd.hasOption("base")) {
+            BASE_DIR = cmd.getOptionValue("base");
+        } else if (BASE_DIR==null) {
+            BASE_DIR = System.getProperty("java.io.tmpdir");
+        }
+
         if (cmd.hasOption("root")) {
             WEBAPP_DIR = cmd.getOptionValue("root");
         }
@@ -43,15 +53,28 @@ public class Main {
         startServer();
     }
 
-    protected static void startServer() throws Exception{
+    protected static void startServer() {
         Tomcat tomcat = new Tomcat();
 
-        tomcat.setPort(PORT);
-        tomcat.addContext("/", new File(WEBAPP_DIR).getAbsolutePath());
+        try {
+            String base = new File(BASE_DIR).getCanonicalPath();
+            String webapp = new File(WEBAPP_DIR).getCanonicalPath();
 
-        System.out.println(new File(WEBAPP_DIR).getAbsolutePath());
+            // System.out.println(base);
 
-        tomcat.start();
+
+            tomcat.setBaseDir(base);
+            tomcat.setPort(PORT);
+
+            tomcat.addWebapp("/", webapp);
+
+            tomcat.start();
+        }catch (Exception e) {
+            System.out.println("here");
+            e.printStackTrace();
+        }
+
+
         tomcat.getServer().await();
     }
 }
