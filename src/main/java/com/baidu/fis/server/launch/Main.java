@@ -69,15 +69,11 @@ public class Main {
             tomcat.addWebapp("/", webapp);
 
             tomcat.start();
-        } catch (LifecycleException e) {
-            System.out.println("LifecycleException");
+
+            tomcat.getServer().await();
         }
         catch (Exception e) {
-            System.out.println("Exception");
             e.printStackTrace();
         }
-
-
-        tomcat.getServer().await();
     }
 }
