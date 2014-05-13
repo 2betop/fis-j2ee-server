@@ -20,6 +20,8 @@ public class Main {
     public static String WEBAPP_DIR = "./web";
 
     public static void main(String[] args) throws Exception {
+        System.setProperty("java.awt.headless", "true");
+
         Options options = new Options();
 
         options.addOption("h", "help", false, "output usage information" );
