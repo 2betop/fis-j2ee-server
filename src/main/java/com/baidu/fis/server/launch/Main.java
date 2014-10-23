@@ -18,6 +18,7 @@ public class Main {
     public static int PORT = 8080;
     public static String BASE_DIR = null;
     public static String WEBAPP_DIR = "./web";
+    public static String WEBAPP_PATH = "";
 
     public static void main(String[] args) throws Exception {
         System.setProperty("java.awt.headless", "true");
@@ -28,6 +29,7 @@ public class Main {
         options.addOption("p", "port", true, "server listen port");
         options.addOption("base", true, "tomcat base dir" );
         options.addOption("root", true, "document root" );
+        options.addOption("webapp", true, "webapp path" );
 
         HelpFormatter help = new HelpFormatter();
         BasicParser parser = new BasicParser();
@@ -52,6 +54,10 @@ public class Main {
             WEBAPP_DIR = cmd.getOptionValue("root");
         }
 
+        if (cmd.hasOption("webapp")) {
+            WEBAPP_PATH = cmd.getOptionValue("webapp");
+        }
+
         startServer();
     }
 
@@ -68,7 +74,7 @@ public class Main {
             tomcat.setBaseDir(base);
             tomcat.setPort(PORT);
 
-            tomcat.addWebapp("/", webapp);
+            tomcat.addWebapp(WEBAPP_PATH, webapp);
 
             tomcat.start();
 
