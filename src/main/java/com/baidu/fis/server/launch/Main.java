@@ -56,6 +56,10 @@ public class Main {
 
         if (cmd.hasOption("webapp")) {
             WEBAPP_PATH = cmd.getOptionValue("webapp");
+
+            if (!WEBAPP_PATH.isEmpty() && !WEBAPP_PATH.startsWith("/")) {
+                WEBAPP_PATH = "/" + WEBAPP_PATH;
+            }
         }
 
         startServer();
