@@ -1,6 +1,7 @@
 package com.baidu.fis.server.launch;
 
 import org.apache.catalina.LifecycleException;
+import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
@@ -19,6 +20,7 @@ public class Main {
     public static String BASE_DIR = null;
     public static String WEBAPP_DIR = "./web";
     public static String WEBAPP_PATH = "";
+    public static Boolean HTTPS = false;
 
     public static void main(String[] args) throws Exception {
         System.setProperty("java.awt.headless", "true");
@@ -30,6 +32,8 @@ public class Main {
         options.addOption("base", true, "tomcat base dir" );
         options.addOption("root", true, "document root" );
         options.addOption("webapp", true, "webapp path" );
+        options.addOption("type", false, "useless just ignore it." );
+        options.addOption("https", false, "https");
 
         HelpFormatter help = new HelpFormatter();
         BasicParser parser = new BasicParser();
@@ -62,6 +66,11 @@ public class Main {
             }
         }
 
+        if (cmd.hasOption("https")) {
+            HTTPS = true;
+        }
+
+
         startServer();
     }
 
@@ -76,7 +85,22 @@ public class Main {
 
 
             tomcat.setBaseDir(base);
-            tomcat.setPort(PORT);
+            Connector defaultConnector = tomcat.getConnector();
+
+            defaultConnector.setPort(PORT);
+
+            if (HTTPS) {
+                System.out.println("Use HTTPS");
+
+                System.out.println(System.getProperty("user.dir") + "/../fis.keystore");
+                defaultConnector.setScheme("https");
+                defaultConnector.setSecure(true);
+                defaultConnector.setAttribute("keystoreFile", System.getProperty("user.dir") + "/../fis.keystore");
+                defaultConnector.setAttribute("keystorePass", "123456");
+                defaultConnector.setAttribute("clientAuth", "false");
+                defaultConnector.setAttribute("sslProtocol", "TLS");
+                defaultConnector.setAttribute("SSLEnabled", true);
+            }
 
             tomcat.addWebapp(WEBAPP_PATH, webapp);
 
