@@ -92,7 +92,6 @@ public class Main {
             if (HTTPS) {
                 System.out.println("Use HTTPS");
 
-                System.out.println(System.getProperty("user.dir") + "/../fis.keystore");
                 defaultConnector.setScheme("https");
                 defaultConnector.setSecure(true);
                 defaultConnector.setAttribute("keystoreFile", System.getProperty("user.dir") + "/../fis.keystore");
